@@ -7,7 +7,6 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static br.com.zup.MercadoLivre.category.CategoryDTO.findCategoryById;
 
@@ -23,7 +22,7 @@ public class ProductDTO {
     private final Integer quantity;
 
     @Size(min = 3)
-    private final List<Map<String, String>> details;
+    private final List<ProductDetails> details;
 
     @NotBlank
     @Size(max = 1000)
@@ -36,7 +35,7 @@ public class ProductDTO {
         @NotBlank String name,
         @NotNull @Positive BigDecimal price,
         @Min(value = 0) Integer quantity,
-        @Size(min = 3) List<Map<String, String>> details,
+        @Size(min = 3) List<ProductDetails> details,
         @Size(min = 1000) String description,
         @NotNull Integer category_id
     ) {
@@ -71,7 +70,7 @@ public class ProductDTO {
         return quantity;
     }
 
-    public List<Map<String, String>> getDetails() {
+    public List<ProductDetails> getDetails() {
         return details;
     }
 
@@ -87,13 +86,10 @@ public class ProductDTO {
         List<ProductDetails> productDetails = new ArrayList<>();
 
         details.forEach(dt -> {
-            if(dt.keySet().size() != 2 || !dt.containsKey("title") || !dt.containsKey("text"))
-                throw new DetailsSizeException("details");
+            if(dt.getText() == null || dt.getTitle() == null) throw new DetailsSizeException("details");
 
-            ProductDetails temp = new ProductDetails(dt.get("title"), dt.get("text"));
-            em.persist(temp);
-
-            productDetails.add(temp);
+            em.persist(dt);
+            productDetails.add(dt);
         });
 
         return productDetails;
