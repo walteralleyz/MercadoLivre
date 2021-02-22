@@ -1,15 +1,7 @@
 package br.com.zup.MercadoLivre.exception;
 
-public class UserNotFoundException extends RuntimeException {
-    private final String field;
-
+public class UserNotFoundException extends GenericException {
     public UserNotFoundException(String f) {
-        super("User not found!");
-
-        this.field = f;
-    }
-
-    public String getField() {
-        return field;
+        super(f, "User not found!");
     }
 }

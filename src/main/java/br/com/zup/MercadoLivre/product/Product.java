@@ -5,6 +5,7 @@ import br.com.zup.MercadoLivre.category.Category;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -22,8 +23,8 @@ public class Product {
     @Column(nullable = false)
     private Integer quantity;
 
-    @OneToOne
-    private ProductDetails details;
+    @OneToMany
+    private List<ProductDetails> details;
 
     @Column(length = 1000, nullable = false)
     private String description;
@@ -36,11 +37,11 @@ public class Product {
     @Deprecated
     public Product() {}
 
-    private Product(
+    public Product(
         String name,
         BigDecimal price,
         Integer quantity,
-        ProductDetails details,
+        List<ProductDetails> details,
         String description,
         Category category
     ) {
@@ -52,15 +53,16 @@ public class Product {
         this.category = category;
     }
 
-    public static Product nu(
-        String name,
-        BigDecimal price,
-        Integer quantity,
-        ProductDetails details,
-        String description,
-        Category category
-    ) {
-        return new Product(name, price, quantity, details, description, category);
+    public ProductResponseDTO toDTO() {
+        return new ProductResponseDTO(
+            name,
+            price,
+            quantity,
+            details,
+            description,
+            category,
+            createdAt
+        );
     }
 
     public Integer getId() {
@@ -79,7 +81,7 @@ public class Product {
         return quantity;
     }
 
-    public ProductDetails getDetails() {
+    public List<ProductDetails> getDetails() {
         return details;
     }
 

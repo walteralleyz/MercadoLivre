@@ -37,7 +37,7 @@ public class CategoryDTO {
         return mother_id;
     }
 
-    public Category findCategoryById(EntityManager em, int id) {
+    public static Category findCategoryById(EntityManager em, int id) {
         return Optional.ofNullable(em.find(Category.class, id))
             .orElseThrow(() -> new CategoryNotFoundException("id"));
     }

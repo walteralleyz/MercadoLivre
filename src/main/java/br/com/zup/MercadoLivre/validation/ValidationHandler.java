@@ -1,6 +1,7 @@
 package br.com.zup.MercadoLivre.validation;
 
 import br.com.zup.MercadoLivre.exception.CategoryNotFoundException;
+import br.com.zup.MercadoLivre.exception.GenericException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,8 +28,8 @@ public class ValidationHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ValidationSimpleMessage handleCategoryException(CategoryNotFoundException e) {
+    @ExceptionHandler(GenericException.class)
+    public ValidationSimpleMessage handleCategoryException(GenericException e) {
         return new ValidationSimpleMessage(
             e.getField(),
             e.getMessage()

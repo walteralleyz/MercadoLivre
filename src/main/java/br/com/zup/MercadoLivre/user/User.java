@@ -13,7 +13,7 @@ import java.util.Collections;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String login;
@@ -41,7 +41,7 @@ public class User implements UserDetails {
         return login;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
