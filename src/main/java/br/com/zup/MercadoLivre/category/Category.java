@@ -1,13 +1,10 @@
 package br.com.zup.MercadoLivre.category;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "categories")
-public class Category implements Serializable {
+public class Category {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -16,10 +13,7 @@ public class Category implements Serializable {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Category categoryMother;
-
-    @OneToMany(mappedBy = "categoryMother", fetch = FetchType.EAGER)
-    private List<Category> categoryChildren;
+    private Category mother;
 
     @Deprecated
     public Category() {}
@@ -29,16 +23,15 @@ public class Category implements Serializable {
     }
 
     public CategoryResponseDTO toDTO() {
-        return new CategoryResponseDTO(name, categoryMother, categoryChildren);
+        return new CategoryResponseDTO(name, mother);
     }
 
-    public void setCategoryMother(Category categoryMother) {
-        this.categoryMother = categoryMother;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-
-    public void setCategoryChildren(List<Category> categoryChildren) {
-        this.categoryChildren = categoryChildren;
+    public void setMother(Category mother) {
+        this.mother = mother;
     }
 
     public Integer getId() {
@@ -49,11 +42,7 @@ public class Category implements Serializable {
         return name;
     }
 
-    public List<Category> getCategoryChildren() {
-        return categoryChildren;
-    }
-
-    public Category getCategoryMother() {
-        return categoryMother;
+    public Category getMother() {
+        return mother;
     }
 }

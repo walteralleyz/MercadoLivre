@@ -1,27 +1,19 @@
 package br.com.zup.MercadoLivre.category;
 
-import java.util.List;
-
 public class CategoryResponseDTO {
     private final String name;
-    private final Category categoryMother;
-    private final List<Category> categoryChildren;
+    private final Category mother;
 
-    public CategoryResponseDTO(String name, Category category, List<Category> categories) {
+    public CategoryResponseDTO(String name, Category category) {
         this.name = name;
-        this.categoryMother = category;
-        this.categoryChildren = categories;
+        this.mother = category;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Category> getCategoryChildren() {
-        return categoryChildren;
-    }
-
-    public Category getCategoryMother() {
-        return categoryMother;
+    public Category getMother() {
+        return mother;
     }
 }

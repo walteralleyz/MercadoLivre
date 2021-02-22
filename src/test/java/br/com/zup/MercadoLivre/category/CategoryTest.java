@@ -20,34 +20,12 @@ public class CategoryTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName(value = "Cadastrar categorias")
+    @DisplayName(value = "Cadastrar categorias com mãe")
     public void deveriaCadastrarCategorias() throws Exception {
         URI uri = new URI("/api/category");
-        String molho = "{\"name\": \"molho\"}";
-        String abacaxi = "{\"name\": \"abacaxi\"}";
-        String repolho = "{\"name\": \"repolho\"}";
+        String molho = "{\"name\": \"molho\", \"mother_id\": 1}";
 
         performPost(uri, molho, 200);
-        performPost(uri, abacaxi, 200);
-        performPost(uri, repolho, 200);
-    }
-
-    @Test
-    @DisplayName(value = "Cadastrar categoria com categoria")
-    public void deveriaCadastrarCategoriaComCategorias() throws Exception {
-        URI uri = new URI("/api/category");
-        String content = "{\"name\": \"comida\", \"children_id\": [1, 2, 3]}";
-
-        performPost(uri, content, 200);
-    }
-
-    @Test
-    @DisplayName(value = "Não deve cadastrar com id incorreto")
-    public void naoDeveriaCadastrarComFilhosInexistentes() throws Exception {
-        URI uri = new URI("/api/category");
-        String content = "{\"name\": \"comida\", \"children_id\": [1, 2, 4]}";
-
-        performPost(uri, content, 400);
     }
 
     public void performPost(URI uri, String content, int status) throws Exception {
