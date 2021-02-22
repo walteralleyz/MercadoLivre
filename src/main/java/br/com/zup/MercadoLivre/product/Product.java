@@ -5,7 +5,6 @@ import br.com.zup.MercadoLivre.category.Category;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Map;
 
 @Entity
 @Table(name = "products")

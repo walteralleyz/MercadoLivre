@@ -19,7 +19,6 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<CategoryResponseDTO> create(@RequestBody @Valid CategoryDTO dto) {
         Category category = dto.toModel(em);
-
         em.persist(category);
 
         return ResponseEntity.ok(category.toDTO());

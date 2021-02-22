@@ -15,14 +15,13 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UserController {
     @PersistenceContext
-    private EntityManager repository;
+    private EntityManager em;
 
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid UserDTO dto) {
         User user = dto.toModel();
-
-        repository.persist(user);
+        em.persist(user);
 
         return ResponseEntity.ok().build();
     }
