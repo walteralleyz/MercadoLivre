@@ -1,10 +1,10 @@
-package br.com.zup.MercadoLivre.product;
+package br.com.zup.MercadoLivre.details;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "details")
-public class ProductDetails {
+public class Details {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -15,9 +15,9 @@ public class ProductDetails {
     private String text;
 
     @Deprecated
-    public ProductDetails() {}
+    public Details() {}
 
-    public ProductDetails(String title, String text) {
+    public Details(String title, String text) {
         this.title = title;
         this.text = text;
     }

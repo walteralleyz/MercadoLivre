@@ -1,6 +1,8 @@
 package br.com.zup.MercadoLivre.product;
 
-import br.com.zup.MercadoLivre.exception.DetailsSizeException;
+import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.details.DetailsDTO;
+import br.com.zup.MercadoLivre.images.ImagesDTO;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
@@ -22,7 +24,7 @@ public class ProductDTO {
     private final Integer quantity;
 
     @Size(min = 3)
-    private final List<ProductDetails> details;
+    private final List<DetailsDTO> details;
 
     @NotBlank
     @Size(max = 1000)
@@ -35,7 +37,7 @@ public class ProductDTO {
         @NotBlank String name,
         @NotNull @Positive BigDecimal price,
         @Min(value = 0) Integer quantity,
-        @Size(min = 3) List<ProductDetails> details,
+        @Size(min = 3) List<DetailsDTO> details,
         @Size(min = 1000) String description,
         @NotNull Integer category_id
     ) {
@@ -52,9 +54,10 @@ public class ProductDTO {
           name,
           price,
           quantity,
-          verifyDetailsSize(em),
+          convertToProductDetails(em),
           description,
-          findCategoryById(em, category_id)
+          findCategoryById(em, category_id),
+          null
         );
     }
 
@@ -70,7 +73,7 @@ public class ProductDTO {
         return quantity;
     }
 
-    public List<ProductDetails> getDetails() {
+    public List<DetailsDTO> getDetails() {
         return details;
     }
 
@@ -82,16 +85,13 @@ public class ProductDTO {
         return category_id;
     }
 
-    public List<ProductDetails> verifyDetailsSize(EntityManager em) {
-        List<ProductDetails> productDetails = new ArrayList<>();
+    public List<Details> convertToProductDetails(EntityManager em) {
+        List<Details> details = new ArrayList<>();
 
-        details.forEach(dt -> {
-            if(dt.getText() == null || dt.getTitle() == null) throw new DetailsSizeException("details");
-
-            em.persist(dt);
-            productDetails.add(dt);
+        this.details.forEach(dt -> {
+            details.add(dt.toModel(em));
         });
 
-        return productDetails;
+        return details;
     }
 }

@@ -1,6 +1,10 @@
 package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
+import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.images.Images;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,7 +28,12 @@ public class Product {
     private Integer quantity;
 
     @OneToMany
-    private List<ProductDetails> details;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Details> details;
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Images> images;
 
     @Column(length = 1000, nullable = false)
     private String description;
@@ -41,9 +50,10 @@ public class Product {
         String name,
         BigDecimal price,
         Integer quantity,
-        List<ProductDetails> details,
+        List<Details> details,
         String description,
-        Category category
+        Category category,
+        List<Images> images
     ) {
         this.name = name;
         this.price = price;
@@ -51,6 +61,7 @@ public class Product {
         this.details = details;
         this.description = description;
         this.category = category;
+        this.images = images;
     }
 
     public ProductResponseDTO toDTO() {
@@ -59,10 +70,19 @@ public class Product {
             price,
             quantity,
             details,
+            images,
             description,
             category,
             createdAt
         );
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setImages(List<Images> images) {
+        this.images = images;
     }
 
     public Integer getId() {
@@ -81,7 +101,7 @@ public class Product {
         return quantity;
     }
 
-    public List<ProductDetails> getDetails() {
+    public List<Details> getDetails() {
         return details;
     }
 
@@ -95,5 +115,9 @@ public class Product {
 
     public LocalDate getCreatedAt() {
         return createdAt;
+    }
+
+    public List<Images> getImages() {
+        return images;
     }
 }

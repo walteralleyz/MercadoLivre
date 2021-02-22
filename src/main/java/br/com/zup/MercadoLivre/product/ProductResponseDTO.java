@@ -1,6 +1,9 @@
 package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
+import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.images.Images;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +13,8 @@ public class ProductResponseDTO {
     private final String name;
     private final BigDecimal price;
     private final Integer quantity;
-    private final List<ProductDetails> details;
+    private final List<Details> details;
+    private final List<Images> images;
     private final String description;
     private final Category category;
     private final LocalDate createdAt;
@@ -19,7 +23,8 @@ public class ProductResponseDTO {
         String name,
         BigDecimal price,
         Integer quantity,
-        List<ProductDetails> details,
+        List<Details> details,
+        List<Images> images,
         String description,
         Category category,
         LocalDate createdAt
@@ -28,6 +33,7 @@ public class ProductResponseDTO {
         this.price = price;
         this.quantity = quantity;
         this.details = details;
+        this.images = images;
         this.description = description;
         this.category = category;
         this.createdAt = createdAt;
@@ -45,8 +51,12 @@ public class ProductResponseDTO {
         return quantity;
     }
 
-    public List<ProductDetails> getDetails() {
+    public List<Details> getDetails() {
         return details;
+    }
+
+    public List<Images> getImages() {
+        return images;
     }
 
     public String getDescription() {
