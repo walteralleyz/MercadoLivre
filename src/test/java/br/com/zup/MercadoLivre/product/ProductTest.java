@@ -86,7 +86,7 @@ public class ProductTest {
         String token = extractToken(performPost(mvc, uri, content, 200, "test"));
 
         String imageContent = "{\"images\": [{\"link\": \"testecomoutrouser.com\"}]}";
-        String response = performPut(mvc, imageURI, imageContent, 400, token);
+        String response = performPut(mvc, imageURI, imageContent, 403, token);
 
         System.out.println(response);
     }

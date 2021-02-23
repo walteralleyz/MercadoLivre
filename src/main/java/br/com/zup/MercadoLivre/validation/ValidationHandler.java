@@ -2,6 +2,7 @@ package br.com.zup.MercadoLivre.validation;
 
 import br.com.zup.MercadoLivre.exception.CategoryNotFoundException;
 import br.com.zup.MercadoLivre.exception.GenericException;
+import br.com.zup.MercadoLivre.exception.NotTheSameOwnerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -50,6 +51,15 @@ public class ValidationHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public List<ValidationSimpleMessage> handleMethodException(MethodArgumentNotValidException e) {
         return handleBindException(e);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(NotTheSameOwnerException.class)
+    public ValidationSimpleMessage handleNotOwnerException(NotTheSameOwnerException e) {
+        return new ValidationSimpleMessage(
+            e.getField(),
+            e.getMessage()
+        );
     }
 
     public String getMessage(ObjectError e) {
