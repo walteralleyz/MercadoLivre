@@ -2,11 +2,15 @@ package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
 import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.exception.NotTheSameOwnerException;
 import br.com.zup.MercadoLivre.images.Images;
+import br.com.zup.MercadoLivre.user.User;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
+import javax.security.auth.login.AccountException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +39,10 @@ public class Product {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Images> images;
 
+    @OneToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private User user;
+
     @Column(length = 1000, nullable = false)
     private String description;
 
@@ -62,6 +70,7 @@ public class Product {
         this.description = description;
         this.category = category;
         this.images = images;
+        this.user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public ProductResponseDTO toDTO() {
@@ -119,5 +128,16 @@ public class Product {
 
     public List<Images> getImages() {
         return images;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public static void verifySameOwner(User productUser) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(!user.getUsername().equals(productUser.getUsername()))
+            throw new NotTheSameOwnerException("username");
     }
 }

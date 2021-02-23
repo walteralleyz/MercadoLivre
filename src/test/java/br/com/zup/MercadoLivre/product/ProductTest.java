@@ -30,6 +30,10 @@ public class ProductTest {
         token = extractToken(performPost(mvc, uri, content, 200, "test"));
     }
 
+    /*
+        Os testes estão com nomes em ordem alfabetica para que o JUnit obedeça a ordem
+     */
+
     @Test
     @DisplayName(value = "Cadastrar produto com detalhes")
     public void myTestA() throws Exception {
@@ -67,6 +71,22 @@ public class ProductTest {
     public void myTestC() throws Exception {
         URI uri = new URI("/api/product/1");
         String response = performGet(mvc, uri, 200, token);
+
+        System.out.println(response);
+    }
+
+    @Test
+    @DisplayName(value = "Tentar atualizar um produto com imagens com outro usuario")
+    public void myTestD() throws Exception {
+        URI imageURI = new URI("/api/product/1/images");
+
+        URI uri = new URI("/api/security");
+        String content = "{\"login\": \"guest@mail.com\", \"password\": \"123456\"}";
+
+        String token = extractToken(performPost(mvc, uri, content, 200, "test"));
+
+        String imageContent = "{\"images\": [{\"link\": \"testecomoutrouser.com\"}]}";
+        String response = performPut(mvc, imageURI, imageContent, 400, token);
 
         System.out.println(response);
     }
