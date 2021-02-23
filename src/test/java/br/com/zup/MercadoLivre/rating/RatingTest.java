@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
 
+import static br.com.zup.MercadoLivre.util.Auth.generateToken;
 import static br.com.zup.MercadoLivre.util.Request.performPost;
-import static br.com.zup.MercadoLivre.util.Token.extractToken;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,10 +24,7 @@ public class RatingTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        URI uri = new URI("/api/security");
-        String content = "{\"login\": \"user@mail.com\", \"password\": \"123456\"}";
-
-        token = extractToken(performPost(mvc, uri, content, 200, "test"));
+        token = generateToken(mvc, "user@mail.com", "123456");
     }
 
     @Test
@@ -44,10 +41,7 @@ public class RatingTest {
     @Test
     @DisplayName(value = "Cadastrar opinião com usuario diferente")
     public void shouldCreateRatingWithDifferentUser() throws Exception {
-        URI userUri = new URI("/api/security");
-        String userContent = "{\"login\": \"guest@mail.com\", \"password\": \"123456\"}";
-
-        token = extractToken(performPost(mvc, userUri, userContent, 200, "test"));
+        token = generateToken(mvc, "guest@mail.com", "123456");
 
         URI uri = new URI("/api/rating");
         String content = "{\"level\": 4, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";

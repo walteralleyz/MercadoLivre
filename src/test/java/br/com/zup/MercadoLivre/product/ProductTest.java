@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
 
+import static br.com.zup.MercadoLivre.util.Auth.generateToken;
 import static br.com.zup.MercadoLivre.util.Request.*;
-import static br.com.zup.MercadoLivre.util.Token.extractToken;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,10 +24,7 @@ public class ProductTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        URI uri = new URI("/api/security");
-        String content = "{\"login\": \"user@mail.com\", \"password\": \"123456\"}";
-
-        token = extractToken(performPost(mvc, uri, content, 200, "test"));
+        token = generateToken(mvc, "user@mail.com", "123456");
     }
 
     /*
@@ -58,10 +55,7 @@ public class ProductTest {
     public void myTestD() throws Exception {
         URI imageURI = new URI("/api/product/1/images");
 
-        URI uri = new URI("/api/security");
-        String content = "{\"login\": \"guest@mail.com\", \"password\": \"123456\"}";
-
-        String token = extractToken(performPost(mvc, uri, content, 200, "test"));
+        token = generateToken(mvc, "guest@mail.com", "123456");
 
         String imageContent = "{\"images\": [{\"link\": \"testecomoutrouser.com\"}]}";
         String response = performPut(mvc, imageURI, imageContent, 403, token);
