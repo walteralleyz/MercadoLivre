@@ -1,6 +1,9 @@
 package br.com.zup.MercadoLivre.category;
 
+import br.com.zup.MercadoLivre.exception.CategoryNotFoundException;
+
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "categories")
@@ -23,7 +26,7 @@ public class Category {
     }
 
     public CategoryResponseDTO toDTO() {
-        return new CategoryResponseDTO(name, mother);
+        return new CategoryResponseDTO(name, mother.toDTO());
     }
 
     public void setId(Integer id) {
@@ -44,5 +47,10 @@ public class Category {
 
     public Category getMother() {
         return mother;
+    }
+
+    public static Category findCategoryById(EntityManager em, int id) {
+        return Optional.ofNullable(em.find(Category.class, id))
+            .orElseThrow(() -> new CategoryNotFoundException("id"));
     }
 }

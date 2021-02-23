@@ -2,9 +2,9 @@ package br.com.zup.MercadoLivre.category;
 
 public class CategoryResponseDTO {
     private final String name;
-    private final Category mother;
+    private final CategoryResponseDTO mother;
 
-    public CategoryResponseDTO(String name, Category category) {
+    public CategoryResponseDTO(String name, CategoryResponseDTO category) {
         this.name = name;
         this.mother = category;
     }
@@ -13,7 +13,7 @@ public class CategoryResponseDTO {
         return name;
     }
 
-    public Category getMother() {
+    public CategoryResponseDTO getMother() {
         return mother;
     }
 }

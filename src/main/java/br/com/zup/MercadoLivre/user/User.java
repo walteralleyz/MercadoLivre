@@ -37,6 +37,14 @@ public class User implements UserDetails {
         this.createdAt = createdAt;
     }
 
+    public UserDTO toDTO() {
+        return new UserDTO(
+            login,
+            password,
+            createdAt
+        );
+    }
+
     public String getLogin() {
         return login;
     }

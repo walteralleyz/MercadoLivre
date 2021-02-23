@@ -2,7 +2,6 @@ package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.details.Details;
 import br.com.zup.MercadoLivre.details.DetailsDTO;
-import br.com.zup.MercadoLivre.images.ImagesDTO;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.com.zup.MercadoLivre.category.CategoryDTO.findCategoryById;
+import static br.com.zup.MercadoLivre.category.Category.findCategoryById;
 
 public class ProductDTO {
     @NotBlank

@@ -2,6 +2,7 @@ package br.com.zup.MercadoLivre.user;
 
 import br.com.zup.MercadoLivre.annotation.Singular;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -47,6 +48,7 @@ public class UserDTO {
         return login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

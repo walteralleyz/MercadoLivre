@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.net.URI;
 
+import static br.com.zup.MercadoLivre.util.Request.performPost;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SecurityTest {
@@ -25,15 +27,6 @@ public class SecurityTest {
         URI uri = new URI("/api/security");
         String content = "{\"login\": \"user@mail.com\", \"password\": \"123456\"}";
 
-        performPost(uri, content, 200);
-    }
-
-    public void performPost(URI uri, String content, int status) throws Exception {
-        mvc.perform(MockMvcRequestBuilders
-            .post(uri)
-            .content(content)
-            .header("Accept-language", "pt")
-            .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().is(status));
+        performPost(mvc, uri, content, 200, "test");
     }
 }

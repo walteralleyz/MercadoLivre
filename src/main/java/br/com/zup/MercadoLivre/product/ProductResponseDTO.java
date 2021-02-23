@@ -2,12 +2,15 @@ package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
 import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.details.DetailsDTO;
 import br.com.zup.MercadoLivre.images.Images;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.zup.MercadoLivre.images.ImagesDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductResponseDTO {
     private final String name;
@@ -51,12 +54,14 @@ public class ProductResponseDTO {
         return quantity;
     }
 
-    public List<Details> getDetails() {
-        return details;
+    public List<DetailsDTO> getDetails() {
+        return details.stream().map(Details::toDTO).collect(Collectors.toList());
     }
 
-    public List<Images> getImages() {
-        return images;
+    public List<ImagesDTO> getImages() {
+        if(images == null)
+            return Collections.singletonList(new ImagesDTO());
+        return images.stream().map(Images::toDTO).collect(Collectors.toList());
     }
 
     public String getDescription() {

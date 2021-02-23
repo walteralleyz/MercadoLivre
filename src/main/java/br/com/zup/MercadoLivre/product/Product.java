@@ -2,7 +2,9 @@ package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
 import br.com.zup.MercadoLivre.details.Details;
+import br.com.zup.MercadoLivre.exception.CategoryNotFoundException;
 import br.com.zup.MercadoLivre.exception.NotTheSameOwnerException;
+import br.com.zup.MercadoLivre.exception.ProductNotFoundException;
 import br.com.zup.MercadoLivre.images.Images;
 import br.com.zup.MercadoLivre.user.User;
 import org.hibernate.annotations.LazyCollection;
@@ -10,10 +12,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
-import javax.security.auth.login.AccountException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "products")
@@ -139,5 +141,10 @@ public class Product {
 
         if(!user.getUsername().equals(productUser.getUsername()))
             throw new NotTheSameOwnerException("username");
+    }
+
+    public static Product findProductById(EntityManager em, int id) {
+        return Optional.ofNullable(em.find(Product.class, id))
+            .orElseThrow(() -> new ProductNotFoundException("id"));
     }
 }

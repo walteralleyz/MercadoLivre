@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Optional;
 
+import static br.com.zup.MercadoLivre.product.Product.findProductById;
 import static br.com.zup.MercadoLivre.product.Product.verifySameOwner;
 
 @RestController
@@ -34,9 +35,7 @@ public class ProductController {
         @PathVariable Integer id,
         @RequestBody @Valid ProductImagesDTO dto
     ) {
-        Product product = Optional.ofNullable(em.find(Product.class, id))
-            .orElseThrow(() -> new ProductNotFoundException("id"));
-
+        Product product = findProductById(em, id);
         verifySameOwner(product.getUser());
 
         product = dto.toModel(product, em);
@@ -47,8 +46,7 @@ public class ProductController {
     @GetMapping("/{id}")
     @Transactional
     public ResponseEntity<ProductResponseDTO> getById(@PathVariable Integer id) {
-        Product product = Optional.ofNullable(em.find(Product.class, id))
-            .orElseThrow(() -> new ProductNotFoundException("id"));
+        Product product = findProductById(em, id);
 
         return ResponseEntity.ok(product.toDTO());
     }

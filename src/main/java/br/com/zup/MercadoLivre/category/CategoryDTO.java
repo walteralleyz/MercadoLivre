@@ -1,11 +1,11 @@
 package br.com.zup.MercadoLivre.category;
 
 import br.com.zup.MercadoLivre.annotation.Singular;
-import br.com.zup.MercadoLivre.exception.CategoryNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
-import java.util.Optional;
+
+import static br.com.zup.MercadoLivre.category.Category.findCategoryById;
 
 public class CategoryDTO {
 
@@ -35,10 +35,5 @@ public class CategoryDTO {
 
     public Integer getMother_id() {
         return mother_id;
-    }
-
-    public static Category findCategoryById(EntityManager em, int id) {
-        return Optional.ofNullable(em.find(Category.class, id))
-            .orElseThrow(() -> new CategoryNotFoundException("id"));
     }
 }

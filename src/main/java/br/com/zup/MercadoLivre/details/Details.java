@@ -22,6 +22,10 @@ public class Details {
         this.text = text;
     }
 
+    public DetailsDTO toDTO() {
+        return new DetailsDTO(title, text);
+    }
+
     public Integer getId() {
         return id;
     }
