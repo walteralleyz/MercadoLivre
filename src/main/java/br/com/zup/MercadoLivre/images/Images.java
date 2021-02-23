@@ -1,5 +1,7 @@
 package br.com.zup.MercadoLivre.images;
 
+import br.com.zup.MercadoLivre.product.Product;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,15 +14,19 @@ public class Images {
     @Column(nullable = false)
     private String link;
 
+    @ManyToOne
+    private Product product;
+
     @Deprecated
     public Images() {}
 
-    public Images(String link) {
+    public Images(String link, Product product) {
         this.link = link;
+        this.product = product;
     }
 
     public ImagesDTO toDTO() {
-        return new ImagesDTO(link);
+        return new ImagesDTO(link, product.getId());
     }
 
     public Integer getId() {

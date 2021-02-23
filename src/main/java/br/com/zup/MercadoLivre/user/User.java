@@ -2,6 +2,7 @@ package br.com.zup.MercadoLivre.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDate createdAt;
 
+
     @Deprecated
     public User() {}
 
@@ -40,7 +42,7 @@ public class User implements UserDetails {
     public UserDTO toDTO() {
         return new UserDTO(
             login,
-            password,
+            null,
             createdAt
         );
     }
@@ -89,5 +91,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static User getActualUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

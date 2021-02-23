@@ -13,18 +13,18 @@ public class CategoryDTO {
     @Singular(domainClass = Category.class, fieldName = "name")
     private final String name;
 
-    private final Integer mother_id;
+    private final Integer category_id;
 
-    public CategoryDTO(String name, Integer mother_id) {
+    public CategoryDTO(String name, Integer category_id) {
         this.name = name;
-        this.mother_id = mother_id;
+        this.category_id = category_id;
     }
 
     public Category toModel(EntityManager em) {
         Category category = new Category(name);
 
-        if(mother_id != null)
-            category.setMother(findCategoryById(em, mother_id));
+        if(category_id != null)
+            category.setCategory(findCategoryById(em, category_id));
 
         return category;
     }
@@ -33,7 +33,7 @@ public class CategoryDTO {
         return name;
     }
 
-    public Integer getMother_id() {
-        return mother_id;
+    public Integer getCategory_id() {
+        return category_id;
     }
 }

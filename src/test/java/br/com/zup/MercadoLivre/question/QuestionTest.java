@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.category;
+package br.com.zup.MercadoLivre.question;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +13,10 @@ import java.net.URI;
 import static br.com.zup.MercadoLivre.util.Request.performPost;
 import static br.com.zup.MercadoLivre.util.Token.extractToken;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CategoryTest {
+public class QuestionTest {
 
     @Autowired
     private MockMvc mvc;
@@ -31,12 +32,12 @@ public class CategoryTest {
     }
 
     @Test
-    @DisplayName(value = "Cadastrar categorias com mãe")
-    public void deveriaCadastrarCategorias() throws Exception {
-        URI uri = new URI("/api/category");
-        String molho = "{\"name\": \"molho\", \"category_id\": 1}";
+    @DisplayName(value = "Cadastrar nova pergunta")
+    public void shouldCreateNewQuestion() throws Exception {
+        URI uri = new URI("/api/question");
+        String content = "{\"title\": \"teste\", \"product_id\": 1}";
 
-        String response = performPost(mvc, uri, molho, 200, token);
+        String response = performPost(mvc, uri, content, 200, token);
 
         System.out.println(response);
     }

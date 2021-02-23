@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.category;
+package br.com.zup.MercadoLivre.checkout;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,7 @@ import static br.com.zup.MercadoLivre.util.Token.extractToken;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CategoryTest {
+public class CheckoutTest {
 
     @Autowired
     private MockMvc mvc;
@@ -31,13 +31,25 @@ public class CategoryTest {
     }
 
     @Test
-    @DisplayName(value = "Cadastrar categorias com mãe")
-    public void deveriaCadastrarCategorias() throws Exception {
-        URI uri = new URI("/api/category");
-        String molho = "{\"name\": \"molho\", \"category_id\": 1}";
+    @DisplayName(value = "Criar um checkout com quantidade alem")
+    public void shouldNotCreateAPayment() throws Exception {
+        URI uri = new URI("/api/checkout");
+        String content = "{\"product_id\": 1, \"productQuantity\": 20, \"status\": 0, \"payment\": 0}";
 
-        String response = performPost(mvc, uri, molho, 200, token);
+        String response = performPost(mvc, uri, content, 400, token);
 
         System.out.println(response);
     }
+
+    @Test
+    @DisplayName(value = "Criar um checkout")
+    public void shouldCreateAPayment() throws Exception {
+        URI uri = new URI("/api/checkout");
+        String content = "{\"product_id\": 1, \"productQuantity\": 9, \"status\": 0, \"payment\": 0}";
+
+        String response = performPost(mvc, uri, content, 302, token);
+
+        System.out.println(response);
+    }
+
 }

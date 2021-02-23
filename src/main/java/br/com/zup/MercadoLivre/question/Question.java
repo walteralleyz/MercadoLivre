@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.rating;
+package br.com.zup.MercadoLivre.question;
 
 import br.com.zup.MercadoLivre.product.Product;
 import br.com.zup.MercadoLivre.user.User;
@@ -6,48 +6,43 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 import static br.com.zup.MercadoLivre.user.User.getActualUser;
 
 @Entity
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "questions")
+public class Question {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-    private Integer level;
-
-    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 500)
-    private String description;
+    private LocalDate createdAt;
 
-    @OneToOne
+    @ManyToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Product product;
 
     @Deprecated
-    public Rating() {}
+    public Question() {}
 
-    public Rating(Integer level, String title, String description, Product product) {
-        this.level = level;
+    public Question(String title, Product product) {
         this.title = title;
-        this.description = description;
         this.product = product;
 
         this.user = getActualUser();
+        this.createdAt = LocalDate.now();
     }
 
-    public RatingResponseDTO toDTO() {
-        return new RatingResponseDTO(
-            level,
+    public QuestionResponseDTO toDTO() {
+        return new QuestionResponseDTO(
             title,
-            description,
+            createdAt,
             user.toDTO()
         );
     }
@@ -56,16 +51,12 @@ public class Rating {
         return id;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
     public User getUser() {
@@ -74,5 +65,11 @@ public class Rating {
 
     public Product getProduct() {
         return product;
+    }
+
+    public void sendEmailToSeller() {
+        System.out.printf("Usuário %s fez a pergunta %S. Acesse >>>/api/product/%s<<< para visualizar.%n",
+            user.getUsername(), title, product.getId()
+        );
     }
 }

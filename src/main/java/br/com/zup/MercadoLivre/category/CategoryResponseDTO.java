@@ -2,18 +2,19 @@ package br.com.zup.MercadoLivre.category;
 
 public class CategoryResponseDTO {
     private final String name;
-    private final CategoryResponseDTO mother;
+    private final Category category;
 
-    public CategoryResponseDTO(String name, CategoryResponseDTO category) {
+    public CategoryResponseDTO(String name, Category category) {
         this.name = name;
-        this.mother = category;
+        this.category = category;
     }
 
     public String getName() {
         return name;
     }
 
-    public CategoryResponseDTO getMother() {
-        return mother;
+    public CategoryResponseDTO getCategory() {
+        if(category == null) return null;
+        return category.toDTO();
     }
 }

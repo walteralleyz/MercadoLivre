@@ -16,7 +16,7 @@ public class Category {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Category mother;
+    private Category category;
 
     @Deprecated
     public Category() {}
@@ -26,15 +26,15 @@ public class Category {
     }
 
     public CategoryResponseDTO toDTO() {
-        return new CategoryResponseDTO(name, mother.toDTO());
+        return new CategoryResponseDTO(name, category);
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setMother(Category mother) {
-        this.mother = mother;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Integer getId() {
@@ -45,8 +45,8 @@ public class Category {
         return name;
     }
 
-    public Category getMother() {
-        return mother;
+    public Category getCategory() {
+        return category;
     }
 
     public static Category findCategoryById(EntityManager em, int id) {

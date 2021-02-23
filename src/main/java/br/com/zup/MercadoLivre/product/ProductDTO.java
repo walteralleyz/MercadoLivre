@@ -6,6 +6,7 @@ import br.com.zup.MercadoLivre.details.DetailsDTO;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

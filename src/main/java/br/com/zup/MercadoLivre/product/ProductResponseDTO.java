@@ -1,14 +1,14 @@
 package br.com.zup.MercadoLivre.product;
 
 import br.com.zup.MercadoLivre.category.Category;
-import br.com.zup.MercadoLivre.details.Details;
 import br.com.zup.MercadoLivre.details.DetailsDTO;
 import br.com.zup.MercadoLivre.images.Images;
-import br.com.zup.MercadoLivre.images.ImagesDTO;
+import br.com.zup.MercadoLivre.question.Question;
+import br.com.zup.MercadoLivre.rating.Rating;
+import br.com.zup.MercadoLivre.rating.RatingResponseDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +16,10 @@ public class ProductResponseDTO {
     private final String name;
     private final BigDecimal price;
     private final Integer quantity;
-    private final List<Details> details;
+    private final List<DetailsDTO> details;
     private final List<Images> images;
+    private final List<Question> questions;
+    private final List<Rating> ratings;
     private final String description;
     private final Category category;
     private final LocalDate createdAt;
@@ -26,8 +28,10 @@ public class ProductResponseDTO {
         String name,
         BigDecimal price,
         Integer quantity,
-        List<Details> details,
+        List<DetailsDTO> details,
         List<Images> images,
+        List<Question> questions,
+        List<Rating> ratings,
         String description,
         Category category,
         LocalDate createdAt
@@ -37,6 +41,8 @@ public class ProductResponseDTO {
         this.quantity = quantity;
         this.details = details;
         this.images = images;
+        this.questions = questions;
+        this.ratings = ratings;
         this.description = description;
         this.category = category;
         this.createdAt = createdAt;
@@ -55,13 +61,35 @@ public class ProductResponseDTO {
     }
 
     public List<DetailsDTO> getDetails() {
-        return details.stream().map(Details::toDTO).collect(Collectors.toList());
+        return details;
     }
 
-    public List<ImagesDTO> getImages() {
-        if(images == null)
-            return Collections.singletonList(new ImagesDTO());
+    public List<?> getImages() {
+        if(images == null) return images;
         return images.stream().map(Images::toDTO).collect(Collectors.toList());
+    }
+
+    public List<?> getQuestions() {
+        if(questions == null) return questions;
+        return questions.stream().map(Question::toDTO).collect(Collectors.toList());
+    }
+
+    public List<?> getRatings() {
+        if(ratings == null) return ratings;
+        return ratings.stream().map(Rating::toDTO).collect(Collectors.toList());
+    }
+
+    public Double getRatingsAvarage() {
+        if(ratings == null || ratings.isEmpty()) return 0.00;
+
+        List<RatingResponseDTO> temp = (List<RatingResponseDTO>) getRatings();
+        return temp.stream().mapToDouble(RatingResponseDTO::getLevel).sum() / ratings.size();
+    }
+
+    public Integer getTotalRatings() {
+        if(ratings == null) return 0;
+
+        return ratings.size();
     }
 
     public String getDescription() {

@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.user;
+package br.com.zup.MercadoLivre.question;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,17 +12,20 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/question")
+public class QuestionController {
+
     @PersistenceContext
     private EntityManager em;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO dto) {
-        User user = dto.toModel();
-        em.persist(user);
+    public ResponseEntity<QuestionResponseDTO> create(@RequestBody @Valid QuestionDTO dto) {
+        Question question = dto.toModel(em);
+        em.persist(question);
 
-        return ResponseEntity.ok().build();
+        question.sendEmailToSeller();
+
+        return ResponseEntity.ok(question.toDTO());
     }
 }

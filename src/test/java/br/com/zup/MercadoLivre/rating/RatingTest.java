@@ -28,22 +28,6 @@ public class RatingTest {
         String content = "{\"login\": \"user@mail.com\", \"password\": \"123456\"}";
 
         token = extractToken(performPost(mvc, uri, content, 200, "test"));
-
-        URI product = new URI("/api/product");
-        String productContent = "{" +
-            "\"name\": \"tomate\"," +
-            "\"price\": 2.99," +
-            "\"quantity\": 4," +
-            "\"details\": [" +
-            "{\"title\": \"cor\", \"text\": \"vermelho\"}," +
-            "{\"title\": \"tamanho\", \"text\": \"medio\"}," +
-            "{\"title\": \"qualidade\", \"text\": \"bom\"}" +
-            "]," +
-            "\"description\": \"fruto para ser usada em saladas\"," +
-            "\"category_id\": 1" +
-            "}";
-
-        performPost(mvc, product, productContent, 200, token);
     }
 
     @Test
@@ -51,6 +35,22 @@ public class RatingTest {
     public void shouldCreateRating() throws Exception {
         URI uri = new URI("/api/rating");
         String content = "{\"level\": 3, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
+
+        String response = performPost(mvc, uri, content, 200, token);
+
+        System.out.println(response);
+    }
+
+    @Test
+    @DisplayName(value = "Cadastrar opinião com usuario diferente")
+    public void shouldCreateRatingWithDifferentUser() throws Exception {
+        URI userUri = new URI("/api/security");
+        String userContent = "{\"login\": \"guest@mail.com\", \"password\": \"123456\"}";
+
+        token = extractToken(performPost(mvc, userUri, userContent, 200, "test"));
+
+        URI uri = new URI("/api/rating");
+        String content = "{\"level\": 4, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
 
         String response = performPost(mvc, uri, content, 200, token);
 

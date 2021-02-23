@@ -35,32 +35,10 @@ public class ProductTest {
      */
 
     @Test
-    @DisplayName(value = "Cadastrar produto com detalhes")
-    public void myTestA() throws Exception {
-        URI product = new URI("/api/product");
-        String productContent = "{" +
-            "\"name\": \"tomate\"," +
-            "\"price\": 2.99," +
-            "\"quantity\": 4," +
-            "\"details\": [" +
-            "{\"title\": \"cor\", \"text\": \"vermelho\"}," +
-            "{\"title\": \"tamanho\", \"text\": \"medio\"}," +
-            "{\"title\": \"qualidade\", \"text\": \"bom\"}" +
-            "]," +
-            "\"description\": \"fruto para ser usada em saladas\"," +
-            "\"category_id\": 1" +
-            "}";
-
-        String response = performPost(mvc, product, productContent, 200, token);
-
-        System.out.println(response);
-    }
-
-    @Test
     @DisplayName(value = "Atualizar produto com imagens")
     public void myTestB() throws Exception {
         URI imageURI = new URI("/api/product/1/images");
-        String imageContent = "{\"images\": [{\"link\": \"teste.com\"}, {\"link\": \"teste2.com\"}]}";
+        String imageContent = "{\"images\": [{\"link\": \"teste.com\", \"product_id\": 1}, {\"link\": \"teste2.com\", \"product_id\": 1}]}";
         String response = performPut(mvc, imageURI, imageContent, 200, token);
 
         System.out.println(response);
