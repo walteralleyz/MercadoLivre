@@ -1,5 +1,6 @@
 package br.com.zup.MercadoLivre.integration.checkout;
 
+import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
@@ -18,6 +20,8 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class CheckoutTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
+    private JsonBuilder jsonBuilder;
+    private URI uri;
 
     @Autowired
     public CheckoutTest(MockMvc mvc) {
@@ -25,16 +29,22 @@ public class CheckoutTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws URISyntaxException {
         requestBuilder = new RequestBuilder(mvc);
+        jsonBuilder = new JsonBuilder();
+        uri = new URI("/api/checkout");
     }
 
     @Test
     @DisplayName(value = "Criar um checkout com quantidade alem")
     @WithUserDetails("user@mail.com")
     public void shouldNotCreateAPayment() throws Exception {
-        URI uri = new URI("/api/checkout");
-        String content = "{\"product_id\": 1, \"productQuantity\": 20, \"status\": 0, \"payment\": 0}";
+        String content = jsonBuilder
+            .property("product_id", 1)
+            .property("productQuantity", 20)
+            .property("status", 0)
+            .property("payment", 0)
+            .compact();
 
         String response = requestBuilder.uri(uri).content(content).status(400).post();
 
@@ -45,8 +55,12 @@ public class CheckoutTest {
     @DisplayName(value = "Criar um checkout")
     @WithUserDetails("user@mail.com")
     public void shouldCreateAPayment() throws Exception {
-        URI uri = new URI("/api/checkout");
-        String content = "{\"product_id\": 1, \"productQuantity\": 9, \"status\": 0, \"payment\": 0}";
+        String content = jsonBuilder
+            .property("product_id", 1)
+            .property("productQuantity", 9)
+            .property("status", 0)
+            .property("payment", 0)
+            .compact();
 
         String response = requestBuilder.uri(uri).content(content).status(302).post();
 

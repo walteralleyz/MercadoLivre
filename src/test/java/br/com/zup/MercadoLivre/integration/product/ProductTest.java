@@ -11,8 +11,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
@@ -42,12 +40,14 @@ public class ProductTest {
     @DisplayName(value = "Cadastrar produto")
     @WithUserDetails("user@mail.com")
     public void myTestA() throws Exception {
-        URI imageURI = new URI("/api/product");
-        String[] details = new String[]{"{\"title\": \"cor\",\"text\": \"vermelho\"},",
-            "{\"title\": \"tamanho\", \"text\": \"medio\"},",
-            "{\"title\": \"estado\", \"text\": \"bom\"}"};
+        URI uri = new URI("/api/product");
+        String[] details = new String[]{
+            "title:cor,text:vermelho",
+            "title:tamanho,text:medio",
+            "title:estado,text:bom"
+        };
 
-        String imageContent = jsonBuilder
+        String content = jsonBuilder
             .property("name", "beterraba")
             .property("price", "2.99")
             .property("quantity", 1)
@@ -56,7 +56,7 @@ public class ProductTest {
             .property("category_id", 1)
             .compact();
 
-        String response = requestBuilder.uri(imageURI).content(imageContent).status(200).post();
+        String response = requestBuilder.uri(uri).content(content).status(200).post();
 
         System.out.println(response);
     }
@@ -67,7 +67,12 @@ public class ProductTest {
     @WithUserDetails("user@mail.com")
     public void myTestB() throws Exception {
         URI uri = new URI("/api/product/1/images");
-        String content = "{\"images\": [{\"link\": \"teste.com\", \"product_id\": 1}, {\"link\": \"teste2.com\", \"product_id\": 1}]}";
+        String[] images = new String[]{
+            "link:teste.com,product_id:1",
+            "link:teste2.com,product_id:1"
+        };
+
+        String content = jsonBuilder.property("images", images).compact();
         String response = requestBuilder.uri(uri).content(content).status(200).put();
 
         System.out.println(response);
@@ -89,7 +94,11 @@ public class ProductTest {
     public void myTestD() throws Exception {
         URI uri = new URI("/api/product/1/images");
 
-        String content = "{\"images\": [{\"link\": \"testecomoutrouser.com\"}]}";
+        String[] images = new String[]{
+            "link:testecomoutrouser.com"
+        };
+
+        String content = jsonBuilder.property("images", images).compact();
         String response = requestBuilder.uri(uri).content(content).status(403).put();
 
         System.out.println(response);

@@ -1,12 +1,9 @@
 package br.com.zup.MercadoLivre.user;
 
 import br.com.zup.MercadoLivre.annotation.Singular;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.*;
-import java.time.LocalDate;
 
 public class UserDTO {
 
@@ -19,20 +16,13 @@ public class UserDTO {
     @Size(min = 6)
     private final String password;
 
-    @NotNull
-    @PastOrPresent
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private final LocalDate createdAt;
 
     public UserDTO(
         String login,
-        String password,
-        LocalDate createdAt
+        String password
     ) {
         this.login = login;
         this.password = password;
-        this.createdAt = createdAt;
     }
 
     public User toModel() {
@@ -48,9 +38,5 @@ public class UserDTO {
 
     public String getPassword() {
         return password;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
     }
 }

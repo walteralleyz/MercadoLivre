@@ -1,5 +1,6 @@
 package br.com.zup.MercadoLivre.integration.rating;
 
+import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class RatingTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
+    private JsonBuilder jsonBuilder;
     private URI uri;
 
     @Autowired
@@ -29,6 +31,7 @@ public class RatingTest {
     @BeforeEach
     public void setUp() throws URISyntaxException {
         requestBuilder = new RequestBuilder(mvc);
+        jsonBuilder = new JsonBuilder();
         uri = new URI("/api/rating");
     }
 
@@ -36,7 +39,13 @@ public class RatingTest {
     @DisplayName(value = "Cadastrar opinião")
     @WithUserDetails("user@mail.com")
     public void shouldCreateRating() throws Exception {
-        String content = "{\"level\": 3, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
+        String content = jsonBuilder
+            .property("level", 3)
+            .property("title", "ok")
+            .property("description", "not that")
+            .property("product_id", 1)
+            .compact();
+
         String response = requestBuilder.uri(uri).content(content).status(200).post();
 
         System.out.println(response);
@@ -46,7 +55,13 @@ public class RatingTest {
     @DisplayName(value = "Cadastrar opinião com usuario diferente")
     @WithUserDetails("guest@mail.com")
     public void shouldCreateRatingWithDifferentUser() throws Exception {
-        String content = "{\"level\": 1, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
+        String content = jsonBuilder
+            .property("level", 1)
+            .property("title", "ok")
+            .property("description", "not that")
+            .property("product_id", 1)
+            .compact();
+
         String response = requestBuilder.uri(uri).content(content).status(200).post();
 
         System.out.println(response);
@@ -55,7 +70,13 @@ public class RatingTest {
     @Test
     @DisplayName(value = "Cadastrar opinião sem login")
     public void shouldErrorTryingToCreateRatingWithoutLogin() throws Exception {
-        String content = "{\"level\": 3, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
+        String content = jsonBuilder
+            .property("level", 3)
+            .property("title", "ok")
+            .property("description", "not that")
+            .property("product_id", 1)
+            .compact();
+
         String response = requestBuilder.uri(uri).content(content).status(403).post();
 
         System.out.println(response);

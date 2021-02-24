@@ -1,5 +1,6 @@
 package br.com.zup.MercadoLivre.integration.question;
 
+import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class QuestionTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
+    private JsonBuilder jsonBuilder;
 
     @Autowired
     public QuestionTest(MockMvc mvc) {
@@ -27,6 +29,7 @@ public class QuestionTest {
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
+        jsonBuilder = new JsonBuilder();
     }
 
     @Test
@@ -34,7 +37,11 @@ public class QuestionTest {
     @WithUserDetails("user@mail.com")
     public void shouldCreateNewQuestion() throws Exception {
         URI uri = new URI("/api/question");
-        String content = "{\"title\": \"teste\", \"product_id\": 1}";
+
+        String content = jsonBuilder
+            .property("title", "teste")
+            .property("product_id", 1)
+            .compact();
 
         String response = requestBuilder.uri(uri).content(content).status(200).post();
 

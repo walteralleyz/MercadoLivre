@@ -1,14 +1,21 @@
 package br.com.zup.MercadoLivre.integration.util;
 
-import java.util.List;
-import java.util.Map;
-
 public class JsonBuilder {
-    private final StringBuilder json;
+    private StringBuilder json;
 
     public JsonBuilder() {
+        setup();
+    }
+
+    private void setup() {
         json = new StringBuilder();
         json.append("{");
+    }
+
+    private void close(StringBuilder s, String c) {
+        int index = s.lastIndexOf(",");
+        s.deleteCharAt(index);
+        s.append(c);
     }
 
     public JsonBuilder property(String field, String attribute) {
@@ -21,24 +28,35 @@ public class JsonBuilder {
         return this;
     }
 
-    public JsonBuilder property(String field, String[] attribute) {
+    public JsonBuilder property(String field, String... attribute) {
         StringBuilder temp = new StringBuilder();
         temp.append("[");
 
         for(String attr : attribute) {
-            temp.append(attr);
+            JsonBuilder jsonBuilder = new JsonBuilder();
+
+            String[] splatted = attr.split(",");
+
+            for(String s : splatted) {
+                String[] property = s.split(":");
+                jsonBuilder.property(property[0], property[1]);
+            }
+
+            temp.append(jsonBuilder.compact());
+            temp.append(",");
         }
 
-        temp.append("]");
+        close(temp, "]");
 
         json.append(String.format("\"%s\": %s,", field, temp));
         return this;
     }
 
     public String compact() {
-        int index = json.lastIndexOf(",");
-        json.deleteCharAt(index);
-        json.append("}");
-        return json.toString();
+        close(json, "}");
+        String temp = json.toString();
+        setup();
+
+        return temp;
     }
 }
