@@ -22,14 +22,13 @@ public class Details {
     @Deprecated
     public Details() {}
 
-    public Details(String title, String text, Product product) {
+    public Details(String title, String text) {
         this.title = title;
         this.text = text;
-        this.product = product;
     }
 
     public DetailsDTO toDTO() {
-        return new DetailsDTO(title, text, product.getId());
+        return new DetailsDTO(title, text);
     }
 
     public Integer getId() {

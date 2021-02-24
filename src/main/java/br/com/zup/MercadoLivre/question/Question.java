@@ -8,8 +8,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-import static br.com.zup.MercadoLivre.user.User.getActualUser;
-
 @Entity
 @Table(name = "questions")
 public class Question {
@@ -35,7 +33,7 @@ public class Question {
         this.title = title;
         this.product = product;
 
-        this.user = getActualUser();
+        this.user = User.getActualUser();
         this.createdAt = LocalDate.now();
     }
 

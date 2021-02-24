@@ -8,8 +8,6 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import static br.com.zup.MercadoLivre.product.Product.findProductById;
-
 @QuantityAvailable
 public class CheckoutDTO {
     @NotNull
@@ -38,7 +36,7 @@ public class CheckoutDTO {
     }
 
     public Checkout toModel(EntityManager em) {
-        Product product = findProductById(em, product_id);
+        Product product = Product.findProductById(em, product_id);
         product.setQuantity(productQuantity);
 
         return new Checkout(

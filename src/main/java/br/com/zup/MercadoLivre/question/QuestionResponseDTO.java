@@ -1,17 +1,18 @@
 package br.com.zup.MercadoLivre.question;
 
-import br.com.zup.MercadoLivre.user.UserDTO;
+import br.com.zup.MercadoLivre.user.UserResponseDTO;
+
 import java.time.LocalDate;
 
 public class QuestionResponseDTO {
     private String title;
     private LocalDate createdAt;
-    private UserDTO user;
+    private UserResponseDTO user;
 
     @Deprecated
     public QuestionResponseDTO() {}
 
-    public QuestionResponseDTO(String title, LocalDate createdAt, UserDTO user) {
+    public QuestionResponseDTO(String title, LocalDate createdAt, UserResponseDTO user) {
         this.title = title;
         this.createdAt = createdAt;
         this.user = user;
@@ -25,7 +26,7 @@ public class QuestionResponseDTO {
         return createdAt;
     }
 
-    public UserDTO getUser() {
+    public UserResponseDTO getUser() {
         return user;
     }
 }

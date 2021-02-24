@@ -1,17 +1,17 @@
 package br.com.zup.MercadoLivre.rating;
 
-import br.com.zup.MercadoLivre.user.UserDTO;
+import br.com.zup.MercadoLivre.user.UserResponseDTO;
 
 public class RatingResponseDTO {
     private Integer level;
     private String title;
     private String description;
-    private UserDTO user;
+    private UserResponseDTO user;
 
     @Deprecated
     public RatingResponseDTO() {}
 
-    public RatingResponseDTO(Integer level, String title, String description, UserDTO user) {
+    public RatingResponseDTO(Integer level, String title, String description, UserResponseDTO user) {
         this.level = level;
         this.title = title;
         this.description = description;
@@ -30,7 +30,7 @@ public class RatingResponseDTO {
         return description;
     }
 
-    public UserDTO getUser() {
+    public UserResponseDTO getUser() {
         return user;
     }
 }

@@ -1,7 +1,6 @@
 package br.com.zup.MercadoLivre.checkout;
 
 import br.com.zup.MercadoLivre.payment.IPayment;
-import br.com.zup.MercadoLivre.payment.Payment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

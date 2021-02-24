@@ -5,8 +5,6 @@ import br.com.zup.MercadoLivre.annotation.Singular;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 
-import static br.com.zup.MercadoLivre.category.Category.findCategoryById;
-
 public class CategoryDTO {
 
     @NotBlank
@@ -24,7 +22,7 @@ public class CategoryDTO {
         Category category = new Category(name);
 
         if(category_id != null)
-            category.setCategory(findCategoryById(em, category_id));
+            category.setCategory(Category.findCategoryById(em, category_id));
 
         return category;
     }

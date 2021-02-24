@@ -13,17 +13,13 @@ public class DetailsDTO {
     @NotBlank
     private final String text;
 
-    @NotNull
-    private final Integer product_id;
-
-    public DetailsDTO(@NotBlank String title, @NotBlank String text, @NotNull Integer product_id) {
+    public DetailsDTO(@NotBlank String title, @NotBlank String text) {
         this.title = title;
         this.text = text;
-        this.product_id = product_id;
     }
 
     public Details toModel(EntityManager em) {
-        Details details = new Details(title, text, findProductById(em, product_id));
+        Details details = new Details(title, text);
         em.persist(details);
 
         return details;
@@ -35,9 +31,5 @@ public class DetailsDTO {
 
     public String getText() {
         return text;
-    }
-
-    public Integer getProduct_id() {
-        return product_id;
     }
 }

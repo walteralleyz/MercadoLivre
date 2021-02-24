@@ -1,10 +1,10 @@
 package br.com.zup.MercadoLivre.question;
 
+import br.com.zup.MercadoLivre.product.Product;
+
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import static br.com.zup.MercadoLivre.product.Product.findProductById;
 
 public class QuestionDTO {
     @NotBlank
@@ -21,7 +21,7 @@ public class QuestionDTO {
     public Question toModel(EntityManager em) {
         return new Question(
             title,
-            findProductById(em, product_id)
+            Product.findProductById(em, product_id)
         );
     }
 

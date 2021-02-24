@@ -1,16 +1,14 @@
 package br.com.zup.MercadoLivre.product;
 
+import br.com.zup.MercadoLivre.category.Category;
 import br.com.zup.MercadoLivre.details.Details;
 import br.com.zup.MercadoLivre.details.DetailsDTO;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static br.com.zup.MercadoLivre.category.Category.findCategoryById;
 
 public class ProductDTO {
     @NotBlank
@@ -56,7 +54,7 @@ public class ProductDTO {
           quantity,
           convertToProductDetails(em),
           description,
-          findCategoryById(em, category_id),
+          Category.findCategoryById(em, category_id),
           null
         );
     }

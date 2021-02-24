@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.rating;
+package br.com.zup.MercadoLivre.integration.rating;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,47 +6,48 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
-import static br.com.zup.MercadoLivre.util.Auth.generateToken;
-import static br.com.zup.MercadoLivre.util.Request.performPost;
+import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class RatingTest {
+    private final MockMvc mvc;
+    private RequestBuilder requestBuilder;
+    private URI uri;
 
     @Autowired
-    private MockMvc mvc;
-
-    private String token;
+    public RatingTest(MockMvc mvc) {
+        this.mvc = mvc;
+    }
 
     @BeforeEach
-    public void setUp() throws Exception {
-        token = generateToken(mvc, "user@mail.com", "123456");
+    public void setUp() throws URISyntaxException {
+        requestBuilder = new RequestBuilder(mvc);
+        uri = new URI("/api/rating");
     }
 
     @Test
     @DisplayName(value = "Cadastrar opinião")
+    @WithUserDetails("user@mail.com")
     public void shouldCreateRating() throws Exception {
-        URI uri = new URI("/api/rating");
         String content = "{\"level\": 3, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
-
-        String response = performPost(mvc, uri, content, 200, token);
+        String response = requestBuilder.uri(uri).content(content).status(200).post();
 
         System.out.println(response);
     }
 
     @Test
     @DisplayName(value = "Cadastrar opinião com usuario diferente")
+    @WithUserDetails("guest@mail.com")
     public void shouldCreateRatingWithDifferentUser() throws Exception {
-        token = generateToken(mvc, "guest@mail.com", "123456");
-
-        URI uri = new URI("/api/rating");
-        String content = "{\"level\": 4, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
-
-        String response = performPost(mvc, uri, content, 200, token);
+        String content = "{\"level\": 1, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
+        String response = requestBuilder.uri(uri).content(content).status(200).post();
 
         System.out.println(response);
     }
@@ -54,10 +55,8 @@ public class RatingTest {
     @Test
     @DisplayName(value = "Cadastrar opinião sem login")
     public void shouldErrorTryingToCreateRatingWithoutLogin() throws Exception {
-        URI uri = new URI("/api/rating");
         String content = "{\"level\": 3, \"title\": \"ok\", \"description\": \"not that\", \"product_id\": 1}";
-
-        String response = performPost(mvc, uri, content, 403, "test");
+        String response = requestBuilder.uri(uri).content(content).status(403).post();
 
         System.out.println(response);
     }

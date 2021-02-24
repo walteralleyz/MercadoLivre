@@ -2,7 +2,6 @@ package br.com.zup.MercadoLivre.user;
 
 import br.com.zup.MercadoLivre.annotation.Singular;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -18,7 +17,6 @@ public class UserDTO {
 
     @NotBlank
     @Size(min = 6)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private final String password;
 
     @NotNull
@@ -40,8 +38,7 @@ public class UserDTO {
     public User toModel() {
         return new User(
             login,
-            new BCryptPasswordEncoder().encode(password),
-            createdAt
+            new BCryptPasswordEncoder().encode(password)
         );
     }
 

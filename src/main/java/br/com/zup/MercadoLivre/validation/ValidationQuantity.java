@@ -4,7 +4,6 @@ import br.com.zup.MercadoLivre.annotation.QuantityAvailable;
 import br.com.zup.MercadoLivre.checkout.CheckoutDTO;
 import br.com.zup.MercadoLivre.exception.ProductQuantityException;
 import br.com.zup.MercadoLivre.product.Product;
-import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

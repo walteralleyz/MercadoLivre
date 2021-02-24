@@ -9,8 +9,6 @@ import br.com.zup.MercadoLivre.user.User;
 
 import javax.persistence.*;
 
-import static br.com.zup.MercadoLivre.user.User.getActualUser;
-
 @Entity
 public class Checkout {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +45,7 @@ public class Checkout {
         this.status = status;
         this.payment = payment;
 
-        this.client = getActualUser();
+        this.client = User.getActualUser();
     }
 
     public Integer getId() {

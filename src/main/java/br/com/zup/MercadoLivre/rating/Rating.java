@@ -7,8 +7,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
-import static br.com.zup.MercadoLivre.user.User.getActualUser;
-
 @Entity
 @Table(name = "ratings")
 public class Rating {
@@ -40,7 +38,7 @@ public class Rating {
         this.description = description;
         this.product = product;
 
-        this.user = getActualUser();
+        this.user = User.getActualUser();
     }
 
     public RatingResponseDTO toDTO() {

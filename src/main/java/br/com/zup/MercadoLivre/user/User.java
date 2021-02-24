@@ -31,18 +31,16 @@ public class User implements UserDetails {
 
     public User(
         String login,
-        String password,
-        LocalDate createdAt
+        String password
     ) {
         this.login = login;
         this.password = password;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDate.now();
     }
 
-    public UserDTO toDTO() {
-        return new UserDTO(
+    public UserResponseDTO toDTO() {
+        return new UserResponseDTO(
             login,
-            null,
             createdAt
         );
     }

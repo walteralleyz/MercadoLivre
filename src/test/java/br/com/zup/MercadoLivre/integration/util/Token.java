@@ -1,4 +1,4 @@
-package br.com.zup.MercadoLivre.util;
+package br.com.zup.MercadoLivre.integration.util;
 
 public class Token {
     public static String extractToken(String token) {
