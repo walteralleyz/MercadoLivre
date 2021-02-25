@@ -9,3 +9,8 @@ VALUES (1, 'pepino', 2.99, 10, 'legume', 1, 1, '2021-01-01');
 INSERT INTO details(id, title, text, product_id) VALUES (1, 'cor', 'verde', 1);
 INSERT INTO details(id, title, text, product_id) VALUES (2, 'tamanho', 'grande', 1);
 INSERT INTO details(id, title, text, product_id) VALUES (3, 'tipo', 'abacate', 1);
+
+INSERT INTO checkout(id, product_id, product_quantity, client_id, status, payment_enum)
+VALUES (1, 1, 5, 2, 'INICIADA', 'PAYPAL');
+
+UPDATE products SET quantity = 5 WHERE id = 1;

@@ -1,10 +1,12 @@
 package br.com.zup.MercadoLivre.checkout;
 
 import br.com.zup.MercadoLivre.annotation.QuantityAvailable;
-import br.com.zup.MercadoLivre.payment.Payment;
+import br.com.zup.MercadoLivre.payment.PaymentEnum;
 import br.com.zup.MercadoLivre.product.Product;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -18,16 +20,17 @@ public class CheckoutDTO {
     private final Integer productQuantity;
 
     @NotNull
+    @Enumerated(value = EnumType.STRING)
     private final CheckoutStatus status;
 
     @NotNull
-    private final Payment payment;
+    private final PaymentEnum payment;
 
     public CheckoutDTO(
         @NotNull Integer product_id,
         @NotNull @Positive Integer productQuantity,
         @NotNull CheckoutStatus status,
-        @NotNull Payment payment
+        @NotNull PaymentEnum payment
     ) {
         this.product_id = product_id;
         this.productQuantity = productQuantity;
@@ -47,6 +50,7 @@ public class CheckoutDTO {
         );
     }
 
+
     public Integer getProduct_id() {
         return product_id;
     }
@@ -59,7 +63,7 @@ public class CheckoutDTO {
         return status;
     }
 
-    public Payment getPayment() {
+    public PaymentEnum getPayment() {
         return payment;
     }
 }

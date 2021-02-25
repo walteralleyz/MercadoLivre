@@ -1,6 +1,9 @@
 package br.com.zup.MercadoLivre.integration.user;
 
 import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Persistence;
+import br.com.zup.MercadoLivre.user.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,18 +17,24 @@ import java.net.URISyntaxException;
 
 import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
+import javax.persistence.EntityManager;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserTest {
     private final MockMvc mvc;
+    private final EntityManager em;
+
     private RequestBuilder requestBuilder;
     private URI uri;
     private JsonBuilder jsonBuilder;
 
-    @Autowired
-    public UserTest(MockMvc mvc) {
-        this.mvc = mvc;
+    private Persistence<User> manager;
 
+    @Autowired
+    public UserTest(MockMvc mvc, EntityManager em) {
+        this.mvc = mvc;
+        this.em = em;
     }
 
     @BeforeEach
@@ -33,6 +42,7 @@ public class UserTest {
         requestBuilder = new RequestBuilder(mvc);
         jsonBuilder = new JsonBuilder();
         uri = new URI("/api/user");
+        manager = new Persistence<>(User.class, em);
     }
 
     @Test
@@ -44,6 +54,10 @@ public class UserTest {
             .compact();
 
         requestBuilder.uri(uri).content(content).status(200).post();
+
+        User user = manager.getBy("login", "visitor@mail.com");
+
+        Assertions.assertEquals("visitor@mail.com", user.getLogin());
     }
 
     @Test

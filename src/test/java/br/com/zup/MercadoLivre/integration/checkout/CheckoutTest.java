@@ -42,8 +42,8 @@ public class CheckoutTest {
         String content = jsonBuilder
             .property("product_id", 1)
             .property("productQuantity", 20)
-            .property("status", 0)
-            .property("payment", 0)
+            .property("status", "INICIADA")
+            .property("payment", "PAYPAL")
             .compact();
 
         String response = requestBuilder.uri(uri).content(content).status(400).post();
@@ -57,9 +57,9 @@ public class CheckoutTest {
     public void shouldCreateAPayment() throws Exception {
         String content = jsonBuilder
             .property("product_id", 1)
-            .property("productQuantity", 9)
-            .property("status", 0)
-            .property("payment", 0)
+            .property("productQuantity", 5)
+            .property("status", "INICIADA")
+            .property("payment", "PAYPAL")
             .compact();
 
         String response = requestBuilder.uri(uri).content(content).status(302).post();

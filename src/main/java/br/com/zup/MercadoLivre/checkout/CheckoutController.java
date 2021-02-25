@@ -29,9 +29,11 @@ public class CheckoutController {
         em.persist(checkout);
         IPayment payment = checkout.getPaymentConcrete();
 
+        String paymentUri = String.format("/payment/%s/{id}", checkout.getPayment().toString().toLowerCase());
+
         URI uri = new URI(payment.getLink(
             checkout.getId().toString(),
-            builder.path("/{id}").buildAndExpand(checkout.getId()).toString()
+            builder.path(paymentUri).buildAndExpand(checkout.getId()).toString()
         ));
 
         return ResponseEntity.status(302).location(uri).build();

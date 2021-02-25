@@ -49,13 +49,13 @@ public class RequestBuilder {
 
     }
 
-    public String expects(ResultActions actions) throws Exception {
+    private String expects(ResultActions actions) throws Exception {
         return actions
             .andExpect(MockMvcResultMatchers.status().is(s))
             .andReturn().getResponse().getContentAsString();
     }
 
-    public MockHttpServletRequestBuilder headers(MockHttpServletRequestBuilder builder) {
+    private MockHttpServletRequestBuilder headers(MockHttpServletRequestBuilder builder) {
         return builder
             .content(c)
             .header("Accept-language", "pt")

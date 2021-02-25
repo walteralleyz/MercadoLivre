@@ -1,6 +1,9 @@
 package br.com.zup.MercadoLivre.integration.question;
 
 import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Persistence;
+import br.com.zup.MercadoLivre.question.Question;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,22 +17,29 @@ import java.net.URI;
 
 import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
+import javax.persistence.EntityManager;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class QuestionTest {
     private final MockMvc mvc;
+    private final EntityManager em;
+
     private RequestBuilder requestBuilder;
     private JsonBuilder jsonBuilder;
+    private Persistence<Question> manager;
 
     @Autowired
-    public QuestionTest(MockMvc mvc) {
+    public QuestionTest(MockMvc mvc, EntityManager em) {
         this.mvc = mvc;
+        this.em = em;
     }
 
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
         jsonBuilder = new JsonBuilder();
+        manager = new Persistence<>(Question.class, em);
     }
 
     @Test
@@ -43,8 +53,10 @@ public class QuestionTest {
             .property("product_id", 1)
             .compact();
 
-        String response = requestBuilder.uri(uri).content(content).status(200).post();
+        requestBuilder.uri(uri).content(content).status(200).post();
 
-        System.out.println(response);
+        Question question = manager.getBy("title", "teste");
+        Assertions.assertEquals("teste", question.getTitle());
+        Assertions.assertEquals("pepino", question.getProduct().getName());
     }
 }

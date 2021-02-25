@@ -1,6 +1,9 @@
 package br.com.zup.MercadoLivre.integration.category;
 
+import br.com.zup.MercadoLivre.category.Category;
 import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Persistence;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,22 +17,29 @@ import java.net.URI;
 
 import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 
+import javax.persistence.EntityManager;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CategoryTest {
     private final MockMvc mvc;
+    private final EntityManager em;
+
     private RequestBuilder requestBuilder;
     private JsonBuilder jsonBuilder;
+    private Persistence<Category> manager;
 
     @Autowired
-    public CategoryTest(MockMvc mvc) {
+    public CategoryTest(MockMvc mvc, EntityManager em) {
         this.mvc = mvc;
+        this.em = em;
     }
 
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
         jsonBuilder = new JsonBuilder();
+        manager = new Persistence<>(Category.class, em);
     }
 
     @Test
@@ -42,8 +52,10 @@ public class CategoryTest {
             .property("category_id", 1)
             .compact();
 
-        String response = requestBuilder.uri(uri).content(content).status(200).post();
+        requestBuilder.uri(uri).content(content).status(200).post();
 
-        System.out.println(response);
+        Category category = manager.getBy("name", "molho");
+        Assertions.assertEquals("molho", category.getName());
+        Assertions.assertEquals("comida", category.getCategory().getName());
     }
 }
