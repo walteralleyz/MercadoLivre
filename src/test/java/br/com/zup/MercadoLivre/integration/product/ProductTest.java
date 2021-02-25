@@ -1,6 +1,6 @@
 package br.com.zup.MercadoLivre.integration.product;
 
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class ProductTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
-    private JsonBuilder jsonBuilder;
+    private Json json;
 
     @Autowired
     public ProductTest(MockMvc mvc) {
@@ -30,7 +30,7 @@ public class ProductTest {
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
     }
 
     /*
@@ -47,7 +47,7 @@ public class ProductTest {
             "title:estado,text:bom"
         };
 
-        String content = jsonBuilder
+        String content = json
             .property("name", "beterraba")
             .property("price", "2.99")
             .property("quantity", 1)
@@ -72,7 +72,7 @@ public class ProductTest {
             "link:teste2.com,product_id:1"
         };
 
-        String content = jsonBuilder.property("images", images).compact();
+        String content = json.property("images", images).compact();
         String response = requestBuilder.uri(uri).content(content).status(200).put();
 
         System.out.println(response);
@@ -98,7 +98,7 @@ public class ProductTest {
             "link:testecomoutrouser.com"
         };
 
-        String content = jsonBuilder.property("images", images).compact();
+        String content = json.property("images", images).compact();
         String response = requestBuilder.uri(uri).content(content).status(403).put();
 
         System.out.println(response);

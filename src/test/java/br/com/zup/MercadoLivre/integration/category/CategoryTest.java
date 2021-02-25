@@ -1,7 +1,7 @@
 package br.com.zup.MercadoLivre.integration.category;
 
 import br.com.zup.MercadoLivre.category.Category;
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import br.com.zup.MercadoLivre.integration.util.Persistence;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ public class CategoryTest {
     private final EntityManager em;
 
     private RequestBuilder requestBuilder;
-    private JsonBuilder jsonBuilder;
+    private Json json;
     private Persistence<Category> manager;
 
     @Autowired
@@ -38,7 +38,7 @@ public class CategoryTest {
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
         manager = new Persistence<>(Category.class, em);
     }
 
@@ -47,7 +47,7 @@ public class CategoryTest {
     @WithUserDetails("user@mail.com")
     public void deveriaCadastrarCategorias() throws Exception {
         URI uri = new URI("/api/category");
-        String content = jsonBuilder
+        String content = json
             .property("name", "molho")
             .property("category_id", 1)
             .compact();

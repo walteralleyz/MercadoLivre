@@ -1,6 +1,6 @@
 package br.com.zup.MercadoLivre.integration.rating;
 
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class RatingTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
-    private JsonBuilder jsonBuilder;
+    private Json json;
     private URI uri;
 
     @Autowired
@@ -31,7 +31,7 @@ public class RatingTest {
     @BeforeEach
     public void setUp() throws URISyntaxException {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
         uri = new URI("/api/rating");
     }
 
@@ -39,7 +39,7 @@ public class RatingTest {
     @DisplayName(value = "Cadastrar opinião")
     @WithUserDetails("user@mail.com")
     public void shouldCreateRating() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("level", 3)
             .property("title", "ok")
             .property("description", "not that")
@@ -55,7 +55,7 @@ public class RatingTest {
     @DisplayName(value = "Cadastrar opinião com usuario diferente")
     @WithUserDetails("guest@mail.com")
     public void shouldCreateRatingWithDifferentUser() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("level", 1)
             .property("title", "ok")
             .property("description", "not that")
@@ -70,7 +70,7 @@ public class RatingTest {
     @Test
     @DisplayName(value = "Cadastrar opinião sem login")
     public void shouldErrorTryingToCreateRatingWithoutLogin() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("level", 3)
             .property("title", "ok")
             .property("description", "not that")

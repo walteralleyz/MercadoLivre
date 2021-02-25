@@ -1,9 +1,9 @@
 package br.com.zup.MercadoLivre.integration.util;
 
-public class JsonBuilder {
+public class Json {
     private StringBuilder json;
 
-    public JsonBuilder() {
+    public Json() {
         setup();
     }
 
@@ -18,31 +18,31 @@ public class JsonBuilder {
         s.append(c);
     }
 
-    public JsonBuilder property(String field, String attribute) {
+    public Json property(String field, String attribute) {
         json.append(String.format("\"%s\": \"%s\",", field, attribute));
         return this;
     }
 
-    public JsonBuilder property(String field, Integer attribute) {
+    public Json property(String field, Integer attribute) {
         json.append(String.format("\"%s\": %d,", field, attribute));
         return this;
     }
 
-    public JsonBuilder property(String field, String... attribute) {
+    public Json property(String field, String... attribute) {
         StringBuilder temp = new StringBuilder();
         temp.append("[");
 
         for(String attr : attribute) {
-            JsonBuilder jsonBuilder = new JsonBuilder();
+            Json json = new Json();
 
             String[] splatted = attr.split(",");
 
             for(String s : splatted) {
                 String[] property = s.split(":");
-                jsonBuilder.property(property[0], property[1]);
+                json.property(property[0], property[1]);
             }
 
-            temp.append(jsonBuilder.compact());
+            temp.append(json.compact());
             temp.append(",");
         }
 

@@ -1,6 +1,6 @@
 package br.com.zup.MercadoLivre.integration.user;
 
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import br.com.zup.MercadoLivre.integration.util.Persistence;
 import br.com.zup.MercadoLivre.user.User;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +27,7 @@ public class UserTest {
 
     private RequestBuilder requestBuilder;
     private URI uri;
-    private JsonBuilder jsonBuilder;
+    private Json json;
 
     private Persistence<User> manager;
 
@@ -40,7 +40,7 @@ public class UserTest {
     @BeforeEach
     public void setUp() throws URISyntaxException {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
         uri = new URI("/api/user");
         manager = new Persistence<>(User.class, em);
     }
@@ -48,7 +48,7 @@ public class UserTest {
     @Test
     @DisplayName(value = "Cadastrar usuario")
     public void deveCadastrarUmUsuario() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("login", "visitor@mail.com")
             .property("password", "123456")
             .compact();
@@ -63,7 +63,7 @@ public class UserTest {
     @Test
     @DisplayName(value = "Email repetido")
     public void deveNegarOCadastroComEmailRepetido() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("login", "user@mail.com")
             .property("password", "123456")
             .compact();
@@ -74,7 +74,7 @@ public class UserTest {
     @Test
     @DisplayName(value = "Email incorreto")
     public void deveRetornarErroSeEmailIncorreto() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("login", "mail.com")
             .property("password", "123456")
             .compact();
@@ -85,7 +85,7 @@ public class UserTest {
     @Test
     @DisplayName(value = "Senha fora do padrão")
     public void deveRetornarErroSenhaIncorreta() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("login", "user@mail.com")
             .property("password", "1234")
             .compact();

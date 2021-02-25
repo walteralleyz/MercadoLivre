@@ -1,6 +1,6 @@
 package br.com.zup.MercadoLivre.integration.checkout;
 
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import br.com.zup.MercadoLivre.integration.util.RequestBuilder;
 public class CheckoutTest {
     private final MockMvc mvc;
     private RequestBuilder requestBuilder;
-    private JsonBuilder jsonBuilder;
+    private Json json;
     private URI uri;
 
     @Autowired
@@ -31,7 +31,7 @@ public class CheckoutTest {
     @BeforeEach
     public void setUp() throws URISyntaxException {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
         uri = new URI("/api/checkout");
     }
 
@@ -39,7 +39,7 @@ public class CheckoutTest {
     @DisplayName(value = "Criar um checkout com quantidade alem")
     @WithUserDetails("user@mail.com")
     public void shouldNotCreateAPayment() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("product_id", 1)
             .property("productQuantity", 20)
             .property("status", "INICIADA")
@@ -55,7 +55,7 @@ public class CheckoutTest {
     @DisplayName(value = "Criar um checkout")
     @WithUserDetails("user@mail.com")
     public void shouldCreateAPayment() throws Exception {
-        String content = jsonBuilder
+        String content = json
             .property("product_id", 1)
             .property("productQuantity", 5)
             .property("status", "INICIADA")

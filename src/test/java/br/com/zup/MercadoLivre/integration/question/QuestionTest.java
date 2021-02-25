@@ -1,6 +1,6 @@
 package br.com.zup.MercadoLivre.integration.question;
 
-import br.com.zup.MercadoLivre.integration.util.JsonBuilder;
+import br.com.zup.MercadoLivre.integration.util.Json;
 import br.com.zup.MercadoLivre.integration.util.Persistence;
 import br.com.zup.MercadoLivre.question.Question;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +26,7 @@ public class QuestionTest {
     private final EntityManager em;
 
     private RequestBuilder requestBuilder;
-    private JsonBuilder jsonBuilder;
+    private Json json;
     private Persistence<Question> manager;
 
     @Autowired
@@ -38,7 +38,7 @@ public class QuestionTest {
     @BeforeEach
     public void setUp() {
         requestBuilder = new RequestBuilder(mvc);
-        jsonBuilder = new JsonBuilder();
+        json = new Json();
         manager = new Persistence<>(Question.class, em);
     }
 
@@ -48,7 +48,7 @@ public class QuestionTest {
     public void shouldCreateNewQuestion() throws Exception {
         URI uri = new URI("/api/question");
 
-        String content = jsonBuilder
+        String content = json
             .property("title", "teste")
             .property("product_id", 1)
             .compact();
