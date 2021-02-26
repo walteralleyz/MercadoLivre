@@ -78,13 +78,6 @@ public class Checkout {
         return paymentEnum;
     }
 
-    public IPayment getPaymentConcrete() {
-        if(getPayment().toString().equals("PAYPAL"))
-            return new Paypal();
-
-        return new PagSeguro();
-    }
-
     public void sendEmailToSeller() {
         System.out.printf("Usuário %s iniciou uma compra do produto %s com status %s.%n",
             client.getUsername(), product.getName(), status

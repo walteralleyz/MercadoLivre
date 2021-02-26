@@ -6,6 +6,7 @@ import br.com.zup.MercadoLivre.images.Images;
 import br.com.zup.MercadoLivre.question.Question;
 import br.com.zup.MercadoLivre.rating.Rating;
 import br.com.zup.MercadoLivre.rating.RatingResponseDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,9 +18,16 @@ public class ProductResponseDTO {
     private final BigDecimal price;
     private final Integer quantity;
     private final List<DetailsDTO> details;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final List<Images> images;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final List<Question> questions;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final List<Rating> ratings;
+
     private final String description;
     private final Category category;
     private final LocalDate createdAt;

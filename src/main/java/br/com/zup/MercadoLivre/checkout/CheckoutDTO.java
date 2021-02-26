@@ -1,12 +1,11 @@
 package br.com.zup.MercadoLivre.checkout;
 
+import br.com.zup.MercadoLivre.annotation.ExistsEnum;
 import br.com.zup.MercadoLivre.annotation.QuantityAvailable;
 import br.com.zup.MercadoLivre.payment.PaymentEnum;
 import br.com.zup.MercadoLivre.product.Product;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -20,17 +19,18 @@ public class CheckoutDTO {
     private final Integer productQuantity;
 
     @NotNull
-    @Enumerated(value = EnumType.STRING)
-    private final CheckoutStatus status;
+    @ExistsEnum(domain = "checkout")
+    private final String status;
 
     @NotNull
-    private final PaymentEnum payment;
+    @ExistsEnum(domain = "payment")
+    private final String payment;
 
     public CheckoutDTO(
         @NotNull Integer product_id,
         @NotNull @Positive Integer productQuantity,
-        @NotNull CheckoutStatus status,
-        @NotNull PaymentEnum payment
+        @NotNull String status,
+        @NotNull String payment
     ) {
         this.product_id = product_id;
         this.productQuantity = productQuantity;
@@ -45,8 +45,8 @@ public class CheckoutDTO {
         return new Checkout(
             product,
             productQuantity,
-            status,
-            payment
+            CheckoutStatus.valueOf(status),
+            PaymentEnum.valueOf(payment)
         );
     }
 
@@ -59,11 +59,11 @@ public class CheckoutDTO {
         return productQuantity;
     }
 
-    public CheckoutStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public PaymentEnum getPayment() {
+    public String getPayment() {
         return payment;
     }
 }

@@ -1,30 +1,31 @@
 package br.com.zup.MercadoLivre.payment;
 
+import br.com.zup.MercadoLivre.annotation.ExistsEnum;
 import br.com.zup.MercadoLivre.checkout.Checkout;
 import br.com.zup.MercadoLivre.checkout.CheckoutStatus;
+import br.com.zup.MercadoLivre.exception.EnumException;
+import br.com.zup.MercadoLivre.exception.GenericException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 import static br.com.zup.MercadoLivre.checkout.Checkout.findCheckoutById;
 
 public class PaymentDTO {
     @NotBlank
-    private final Integer checkout_id;
+    private Integer checkout_id;
 
     @NotBlank
-    @Enumerated(value = EnumType.STRING)
-    private final PaymentEnum payment;
+    @ExistsEnum(domain = "payment")
+    private String payment;
 
     @NotBlank
-    private final String status;
+    private String status;
 
-    public PaymentDTO(Integer checkout_id, PaymentEnum payment, String status) {
-        this.checkout_id = checkout_id;
-        this.payment = payment;
-        this.status = status;
+    public PaymentDTO(@NotBlank Integer checkout_id, @NotBlank String payment, @NotBlank String status) {
+        setPayment(payment);
+        setCheckout_id(checkout_id);
+        setStatus(status);
     }
 
     public Payment toModel(EntityManager em) {
@@ -33,9 +34,29 @@ public class PaymentDTO {
 
         return new Payment(
             checkout,
-            payment,
+            PaymentEnum.valueOf(payment),
             status
         );
+    }
+
+    private void setCheckout_id(Integer id) {
+        if(id == null) throw new GenericException("checkout_id", "Não pode ser nulo");
+        this.checkout_id = id;
+    }
+
+    private void setStatus(String status) {
+        if(status == null) throw new GenericException("status", "Não pode ser nulo");
+        this.status = status;
+    }
+
+    private void setPayment(String payment) {
+        try {
+            PaymentEnum.valueOf(payment);
+        } catch (IllegalArgumentException e) {
+            throw new EnumException("payment");
+        }
+
+        this.payment = payment;
     }
 
 
@@ -43,7 +64,7 @@ public class PaymentDTO {
         return checkout_id;
     }
 
-    public PaymentEnum getPayment() {
+    public String getPayment() {
         return payment;
     }
 

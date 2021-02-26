@@ -52,12 +52,28 @@ public class CheckoutTest {
     }
 
     @Test
+    @DisplayName(value = "Proibir checkout com payment incorreto")
+    @WithUserDetails("user@mail.com")
+    public void shouldNotCreateAPaymentWithWrongPayment() throws Exception {
+        String content = json
+            .property("product_id", 1)
+            .property("productQuantity", 2)
+            .property("status", "INICIADA")
+            .property("payment", "ROBERTO")
+            .compact();
+
+        String response = requestBuilder.uri(uri).content(content).status(400).post();
+
+        System.out.println(response);
+    }
+
+    @Test
     @DisplayName(value = "Criar um checkout")
     @WithUserDetails("user@mail.com")
     public void shouldCreateAPayment() throws Exception {
         String content = json
             .property("product_id", 1)
-            .property("productQuantity", 5)
+            .property("productQuantity", 2)
             .property("status", "INICIADA")
             .property("payment", "PAYPAL")
             .compact();

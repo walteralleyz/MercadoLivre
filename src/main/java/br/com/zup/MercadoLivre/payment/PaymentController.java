@@ -16,8 +16,9 @@ public class PaymentController {
 
     @GetMapping("/{pay}/{id}/{status}")
     @Transactional
-    public ResponseEntity<String> paypal(@PathVariable PaymentEnum pay, @PathVariable Integer id, @PathVariable String status) {
-        Payment payment = new PaymentDTO(id, pay, status).toModel(em);
+    public ResponseEntity<String> paypal(@PathVariable String pay, @PathVariable Integer id, @PathVariable String status) {
+        PaymentDTO dto = new PaymentDTO(id, pay, status);
+        Payment payment = dto.toModel(em);
         em.persist(payment);
 
         comunicarSetorNotaFiscal(payment.getCheckout().getId(), payment.getCheckout().getClient().getId());
@@ -28,10 +29,10 @@ public class PaymentController {
     }
 
     public void comunicarSetorNotaFiscal(Integer idCompra, Long idUsuario) {
-        System.out.println(String.format("Compra %d realizada pelo usuário %d", idCompra, idUsuario));
+        System.out.printf("Compra %d realizada pelo usuário %d%n", idCompra, idUsuario);
     }
 
     public void comunicarRankingVendedor(Integer idCompra, Long idUsuario) {
-        System.out.println(String.format("Compra %d do vendedor %d", idCompra, idUsuario));
+        System.out.printf("Compra %d do vendedor %d%n", idCompra, idUsuario);
     }
 }

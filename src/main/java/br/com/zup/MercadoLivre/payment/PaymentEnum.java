@@ -1,10 +1,16 @@
 package br.com.zup.MercadoLivre.payment;
 
 public enum PaymentEnum {
-    PAYPAL,
-    PAGSEGURO;
+    PAYPAL(new Paypal()),
+    PAGSEGURO(new PagSeguro());
 
-    PaymentEnum() {
+    IPayment payment;
 
+    PaymentEnum(IPayment payment) {
+        this.payment = payment;
+    }
+
+    public IPayment getPayment() {
+        return payment;
     }
 }

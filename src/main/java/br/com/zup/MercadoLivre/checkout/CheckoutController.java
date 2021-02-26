@@ -27,7 +27,7 @@ public class CheckoutController {
         Checkout checkout = dto.toModel(em);
         checkout.sendEmailToSeller();
         em.persist(checkout);
-        IPayment payment = checkout.getPaymentConcrete();
+        IPayment payment = checkout.getPayment().getPayment();
 
         String paymentUri = String.format("/payment/%s/{id}", checkout.getPayment().toString().toLowerCase());
 
